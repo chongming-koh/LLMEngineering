@@ -133,6 +133,8 @@ print("Decoded:", decoded)
 
 # Step 6: Full roundtrip through LLM
 response = wrapper.answer_with_llm_DUMMY(prompt, dummy_llm_call, "gpt-4")   
+print("\n")
+print("Let's get a response from a dummy model. Getting response from LLM Model")
 print(response) 
 
 
@@ -144,5 +146,6 @@ client = OpenAI(
 model = "meta-llama/Meta-Llama-3.1-70B-Instruct"
 
 result = wrapper.answer_with_llm(prompt,client=client, model=model)
-
+print("\n")
+print("Let's get a response from a real model. Getting response from LLM Model")
 print(result)    

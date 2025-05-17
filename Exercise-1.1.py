@@ -96,12 +96,23 @@ class LLMPrivacyWrapper:
         """
         # <YOUR CODE HERE>
         encoded_text = self.encode(text)
+        print("\n")
+        print("4: Inside answer_with_llm function and display the encoded text: ")
+        print("=========================================================================")
+        print(encoded_text)
         
         response = client.chat.completions.create(
         model=model,
         messages=[{"role": "user", "content": encoded_text}]
+        
+
+        
         )
-        return response.choices[0].message.content
+        print("\n")
+        print("5: This is model response before decrypting: ")
+        print("=========================================================================")
+        print(response.choices[0].message.content)
+        return self.decode(response.choices[0].message.content)
 
 def dummy_llm_call(text, model):
     # Simulate an LLM response by appending a message
@@ -111,6 +122,9 @@ def dummy_llm_call(text, model):
 # Step 1: Define replacement mapping
 replacement_map = {
     "Apple": "Banana",
+    "apple":"banana",
+    "Apple": "Bananas",
+    "apple":"bananas",
     "John": "Jane",
 }
 
@@ -118,22 +132,22 @@ replacement_map = {
 wrapper = LLMPrivacyWrapper(replacement_map)
 
 # Step 3: Input text
-prompt = "I have a pen. I have an apple. Oh. ApplePen. John have a pen. John have a pineapple. Oh. PineapplePen. Apple Pen. Pineapple Pen. Oh Pen Pineapple Apple Pen.." 
+prompt = "John picked a ripe apple from the tree, savoring its crisp sweetness under the autumn sun." 
         
 # Step 4: Test encode
 encoded = wrapper.encode(prompt)
-print("Encoded:", encoded)
+print("1: Encoded:", encoded)
 # Output: "Jane from Banana is visiting Narnia. Pineapple is not a company. Johnny likes apples."
 
 # Step 5: Test decode (should bring back original)
 decoded = wrapper.decode(encoded)
-print("Decoded:", decoded)
+print("2: Decoded:", decoded)
 # Output: "John from Apple is visiting Singapore. Pineapple is not a company. Johnny likes apples."
 
 # Step 6: Full roundtrip through LLM
 response = wrapper.answer_with_llm_DUMMY(prompt, dummy_llm_call, "gpt-4")   
 print("\n")
-print("Let's get a response from a dummy model. Getting response from LLM Model")
+print("3: Let's get a response from a dummy model. Getting response from LLM Model")
 print(response) 
 
 
@@ -146,5 +160,6 @@ model = "meta-llama/Meta-Llama-3.1-70B-Instruct"
 
 result = wrapper.answer_with_llm(prompt,client=client, model=model)
 print("\n")
-print("Let's get a response from a real model. Getting response from LLM Model")
+print("6: This is the decoded message after communicating with LLM Model")
+print("=========================================================================")
 print(result)    

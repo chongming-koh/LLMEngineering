@@ -112,7 +112,6 @@ def dummy_llm_call(text, model):
 replacement_map = {
     "Apple": "Banana",
     "John": "Jane",
-    "Singapore": "Narnia"
 }
 
 # Step 2: Create wrapper instance
